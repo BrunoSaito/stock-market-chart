@@ -39,15 +39,17 @@ function App() {
   }, []);
 
   useEffect(() => {
-    setData(prices?.map(price => ({ x: dayjs(price.Date).format('YYYY-MM-DD'), y: price.Close })));
+    setData(prices?.map(price => ({ x: dayjs(price.Date).format('YYYY-MM-DD'), y: Number(price.Close).toFixed(2) })));
   }, [prices]);
 
   const handleTicketChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSymbol(e.target.value);
+    setCompanyName(undefined);
   };
 
   const handleCompanyName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCompanyName(e.target.value);
+    setSymbol(undefined);
   };
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
@@ -74,12 +76,12 @@ function App() {
             <HStack spacing={10}>
               <FormControl>
                 <FormLabel>Search by company name</FormLabel>
-                <Input value={companyName} onChange={handleCompanyName} />
+                <Input value={companyName ?? ''} onChange={handleCompanyName} />
               </FormControl>
 
               <FormControl>
                 <FormLabel>Search by ticket symbol</FormLabel>
-                <Input value={symbol} onChange={handleTicketChange} />
+                <Input value={symbol ?? ''} onChange={handleTicketChange} />
               </FormControl>
             </HStack>
 
